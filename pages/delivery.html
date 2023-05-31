@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Delivery Order</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Materialize CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+
+    <!-- Custom CSS -->
+    <style>
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .delivery-form label {
+        font-weight: bold;
+      }
+
+      .delivery-form .input-field {
+        margin-top: 10px;
+      }
+
+      .delivery-form .input-field label {
+        color: #333;
+      }
+
+      .delivery-form .input-field input[type='text'],
+      .delivery-form .input-field input[type='email'] {
+        border-bottom: 1px solid #333;
+        box-shadow: none;
+        padding-left: 0;
+      }
+
+      .delivery-form select {
+        display: block;
+        margin-top: 10px;
+        border: 1px solid #333;
+        box-shadow: none;
+        padding: 0 10px;
+        height: 40px;
+        line-height: 40px;
+        border-radius: 0;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background: url('https://cdn3.iconfinder.com/data/icons/fatcow/32x32_0330/control_repeat.png')
+          no-repeat right #fff;
+        background-size: 32px 32px;
+      }
+
+      .delivery-form .input-field textarea {
+        margin-top: 10px;
+        border: 1px solid #333;
+        box-shadow: none;
+        padding: 10px;
+        height: 100px;
+      }
+
+      .delivery-form .input-field textarea:focus {
+        border: 1px solid #333;
+        box-shadow: none;
+      }
+
+      .delivery-form .input-field input[type='checkbox'] {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 5px;
+      }
+
+      .delivery-form .input-field label input[type='checkbox'] {
+        position: static;
+        opacity: 1;
+        height: inherit;
+        width: inherit;
+      }
+
+      .delivery-form .input-field label {
+        display: inline-block;
+        margin-left: 25px;
+        position: relative;
+        padding-left: 25px;
+      }
+
+      .delivery-form .input-field label:before {
+        content: '';
+        display: inline-block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 20px;
+        border: 1px solid #333;
+        border-radius: 50%;
+        box-shadow: none;
+        background-color: #fff;
+        transition: all 0.3s ease;
+      }
+
+      .delivery-form .input-field label:after {
+        content: '';
+        display: inline-block;
+        position: absolute;
+        left: 7px;
+        top: 7px;
+        height: 6px;
+        width: 6px;
+        border-radius: 50%;
+        background-color: #333;
+        box-shadow: none;
+        transform: scale(0);
+        transition: all 0.3s ease;
+      }
+
+      .delivery-form .input-field label:hover:before {
+        border-color: #4caf50;
+      }
+
+      .delivery-form
+        .input-field
+        label
+        input[type='checkbox']:checked
+        + label:after {
+        transform: scale(1);
+      }
+
+      .delivery-form .input-field .helper-text {
+        margin-top: 5px;
+        font-size: 12px;
+      }
+
+      .delivery-form .input-field .error {
+        color: #ff5252;
+        font-size: 12px;
+        margin-top: 5px;
+      }
+
+      .delivery-form .input-field .success {
+        color: #4caf50;
+        font-size: 12px;
+        margin-top: 5px;
+      }
+
+      .delivery-form .btn {
+        margin-top: 20px;
+        background-color: #4caf50;
+        border-radius: 0;
+        box-shadow: none;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+
+      .delivery-form .btn:hover {
+        background-color: #388e3c;
+      }
+
+      @media only screen and (max-width: 600px) {
+        .container {
+          padding: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h4>Delivery Order <span id="price"></span></h4>
+      <div class="delivery-form">
+        <div class="input-field">
+          <p>Имя</p>
+          <input type="text" id="name" name="name" required />
+          <span class="helper-text">Please enter your name</span>
+          <span class="error"></span>
+          <span class="success"></span>
+        </div>
+        <div class="input-field">
+          <p>Email</p>
+          <input type="email" id="email" name="email" required />
+          <span class="helper-text">Please enter your email</span>
+          <span class="error"></span>
+          <span class="success"></span>
+        </div>
+        <div class="input-field">
+          <p>Адрес</p>
+          <textarea id="address" name="address" required></textarea>
+          <span class="helper-text">Please enter your address</span>
+          <span class="error"></span>
+          <span class="success"></span>
+        </div>
+
+        <div class="input-field" onclick="checked()">
+          <input id="terms" type="checkbox" name="terms" required />
+          <span>I agree to the <a href="#">terms and conditions</a></span>
+          <span class="helper-text"
+            >Please agree to the terms and conditions</span
+          >
+          <span class="error"></span>
+          <span class="success"></span>
+        </div>
+        <button onclick="placeOrder()" class="btn waves-effect waves-light">
+          Place Order
+        </button>
+      </div>
+    </div>
+
+    <!-- Materialize JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+      // Initialize materialize select dropdown
+      document.addEventListener('DOMContentLoaded', function () {
+        var select_elems = document.querySelectorAll('select')
+        M.FormSelect.init(select_elems, {})
+      })
+
+      const checked = () => {
+        document.querySelector('#terms').checked = true
+      }
+
+      function isEmailValid(email) {
+        return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)
+      }
+    </script>
+  </body>
+</html>
+
+<script>
+  const productIds = []
+</script>
+
+<script>
+
+  let price = 0
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    const response = await fetch('/card', {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify({ username: localStorage.getItem('username') }),
+    })
+
+    
+
+    const { card } = await response.json()
+
+    for (let i = 0; i < card.length; ++i) {
+      price += card[i].price * card[i].quantity
+      productIds.push(card[i].id)
+    }
+    document.querySelector('#price').textContent = `${price}₽`
+  })
+</script>
+
+<script>
+  const placeOrder = async () => {
+    const username = localStorage.getItem('username')
+    const name = document.querySelector('#name').value
+
+    if (name === '') return M.toast({ html: 'Заполните имя' })
+
+    const email = document.querySelector('#email').value
+
+    if (!isEmailValid(email)) return M.toast({ html: 'Некорректный email' })
+
+    const address = document.querySelector('#address').value
+
+    if (address === '') return M.toast({ html: 'Заполните адрес' })
+
+    const terms = document.querySelector('#terms').checked
+
+    if (!terms) return M.toast({ html: 'Согласны ли вы с правилами' })
+
+    const response = await fetch('/remove_products', {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify({
+        username: localStorage.getItem('username'),
+        ids: productIds,
+        isOrder : true,
+        price
+      }),
+    })
+    
+
+    const { status } = await response.json()
+
+    console.log('status', status)
+
+    window.location = '/finished_delivery'
+  }
+</script>

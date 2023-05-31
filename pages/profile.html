@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Profile</title>
+    <!-- Materialize CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/css/general.css" />
+    <!-- Custom CSS -->
+    <style>
+      .profile-header {
+        margin-top: 2%;
+        background-color: #2196f3;
+        color: #fff;
+        padding: 3rem;
+      }
+      .profile-header h1 {
+        font-size: 3rem;
+        margin-top: 0;
+      }
+      .profile-header p {
+        font-size: 1.5rem;
+        margin-bottom: 0;
+      }
+      .profile-image {
+        border-radius: 50%;
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        margin-top: -75px;
+        margin-bottom: 1rem;
+      }
+      .profile-info {
+        margin-top: 2rem;
+      }
+      .profile-info ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .profile-info li {
+        margin-bottom: 0.5rem;
+        font-size: 1.2rem;
+      }
+      #prorder {
+        text-align:center
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Dropdown Structure -->
+    <nav>
+      <ul id="dropdown1" class="dropdown-content">
+        <li><a href="#!">Профиль</a></li>
+        <li class="divider"></li>
+        <li><a href="#!" onclick="logout()">Выход</a></li>
+      </ul>
+      <div class="nav-wrapper white">
+        <div class="row">
+          <div class="col s3">
+            <a href="/" class="brand-logo blue-text">ELECTRO</a>
+          </div>
+          <div class="col s3">
+            <div>
+              <div class="input-field blue">
+                <input id="search" type="search" required />
+                <label class="label-icon" for="search"
+                  ><i
+                    id="search-button"
+                    onclick="search()"
+                    class="material-icons"
+                    >search</i
+                  ></label
+                >
+                <i class="material-icons">close</i>
+              </div>
+            </div>
+          </div>
+          <div class="col s6">
+            <ul class="right hide-on-med-and-down">
+              <li>
+                <a
+                  class="dropdown-trigger blue-text"
+                  href="#!"
+                  id="username"
+                  data-target="dropdown1"
+                  >Dropdown<i class="material-icons right"
+                    >arrow_drop_down</i
+                  ></a
+                >
+              </li>
+              <li><a class="green-text" href="/favorite">Избранное</a></li>
+              <li><a class="red-text" href="/card">Корзина</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!-- Dropdown Structure -->
+    <main>
+      <section class="profile-header">
+        <div class="container">
+          <div class="row">
+            <div class="s12">
+              <img
+                style="margin-top: 3%"
+                class="profile-image"
+                src="https://picsum.photos/150/150?random=1"
+                alt="Profile Image"
+              />
+              <h1 id="user-name"></h1>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="profile-info grey lighten-4">
+        <div class="container">
+          <div class="row">
+            <div class="col s12 m6">
+              <h2>Обо мне</h2>
+              <p id="about">
+            
+                
+              </p>
+            </div>
+            <div  class="col s3 m3">
+              <h2>Заказы</h2>
+              <ul class="timeline">
+                <li>
+                  <div class="timeline-badge" id="orders">
+                  
+                    
+
+
+
+                  </div>
+     
+                </li>
+         
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- Materialize JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  </body>
+</html>
+
+<script src="/static/scripts/general.js"></script>
+<script>
+  const userNameBlock = document.querySelector('#user-name')
+
+  userNameBlock.innerHTML = username
+</script>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', async () => {
+
+  const response = await fetch('/profiles', {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify({ username }),
+    })
+
+    const { about } = await response.json()
+
+    const aboutBlock = document.querySelector("#about")
+
+    aboutBlock.innerHTML = about
+
+
+})
+
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const response = await fetch('/orders', {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify({ username }),
+    })
+
+    const { result } = await response.json()
+
+
+    const ordersBlock = document.querySelector('#orders')
+
+    result.map(order =>{
+
+
+      const names = []
+
+      order.orders.map(o => {
+
+        names.push(o.name)
+
+      })
+
+
+      ordersBlock.innerHTML += `<div id="block-${order.id}">Ваш заказ на сумму : ${order.price}. ${names.join(', ')}<button onclick="cancelOrder(${order.id})" class="btn">Отменить</button></div>`
+
+    })
+
+
+   
+})
+
+
+</script>
+
+<script>
+
+  const cancelOrder = async (id) => {
+    const response = await fetch('/cancel_order', {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify({ username, id }),
+    })
+
+    await response.json()
+
+    document.querySelector(`#block-${id}`).style.visibility = 'hidden'
+
+    
+
+
+
+  }
+
+
+</script>

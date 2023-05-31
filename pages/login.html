@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="center">
+      <div class="container">
+        <h1>Вход</h1>
+
+        <div class="row container">
+          <div class="container">
+            <div class="input-field col s12">
+              <input
+                placeholder="Логин"
+                id="login"
+                type="text"
+                class="validate"
+              />
+            </div>
+            <div class="input-field col s12">
+              <input
+                placeholder="Пароль"
+                id="password"
+                type="password"
+                class="validate"
+              />
+            </div>
+            <button class="btn blue" onclick="logIn()">Войти</button>
+            <button class="btn blue" onclick="goToSignUp()">
+              Зарегистрироваться
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script>
+  const goToSignUp = () => {
+    window.location = '/signup'
+  }
+</script>
+<script>
+  const login = localStorage.getItem('username')
+  if (login) {
+    window.location = '/'
+  }
+</script>
+
+<script>
+  const logIn = async () => {
+    const loginText = document.querySelector('#login').value
+    const passText = document.querySelector('#password').value
+
+    if (loginText.length === 0) return M.toast({ html: 'Не правильный логин' })
+    if (passText.length === 0) return M.toast({ html: 'Не правильный пароль' })
+
+    const response = await fetch('/login', {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify({ login: loginText, pass: passText }),
+    })
+
+    const { status } = await response.json()
+
+    console.log(status)
+    if (status === 'ok') {
+      localStorage.setItem('username', loginText)
+      window.location = '/'
+    } else {
+      M.toast({ html: status })
+    }
+  }
+</script>

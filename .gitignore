@@ -1,0 +1,4 @@
+.hypothesis
+.vs
+node_modules
+dist

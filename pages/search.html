@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Список товаров</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/css/general.css" />
+
+    <style>
+      #collection li:hover {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <!-- Dropdown Structure -->
+      <nav>
+        <ul id="dropdown1" class="dropdown-content">
+          <li><a href="#!">Профиль</a></li>
+          <li class="divider"></li>
+          <li><a href="#!" onclick="logout()">Выход</a></li>
+        </ul>
+        <div class="nav-wrapper white">
+          <div class="row">
+            <div class="col s3">
+              <a href="/" class="brand-logo blue-text">ELECTRO</a>
+            </div>
+            <div class="col s3">
+              <div>
+                <div class="input-field blue">
+                  <input id="search" type="search" required />
+                  <label class="label-icon" for="search"
+                    ><i
+                      id="search-button"
+                      onclick="search()"
+                      class="material-icons"
+                      >search</i
+                    ></label
+                  >
+                  <i class="material-icons">close</i>
+                </div>
+              </div>
+            </div>
+            <div class="col s6">
+              <ul class="right hide-on-med-and-down">
+                <li>
+                  <a
+                    class="dropdown-trigger blue-text"
+                    href="#!"
+                    id="username"
+                    data-target="dropdown1"
+                    >Dropdown<i class="material-icons right"
+                      >arrow_drop_down</i
+                    ></a
+                  >
+                </li>
+                <li><a class="green-text" href="/favorite">Избранное</a></li>
+                <li><a class="red-text" href="/card">Корзина</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <!-- Dropdown Structure -->
+    </header>
+
+    <main>
+      <div class="container">
+        <h1>Список товаров</h1>
+        <div class="row">
+          <div class="col s12">
+            <ul id="collection" class="collection"></ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  </body>
+</html>
+<script src="/static/scripts/general.js"></script>
+<script>
+  const template = (
+    image,
+    name,
+    about,
+    price,
+    id
+  ) => `<li onclick="goToProduct(${id})" class="collection-item avatar">
+                <img
+                  src="${image}"
+                  alt=""
+                  class="circle"
+                />
+                <span class="title">${name}</span>
+                <p>${about}</p>
+                <a href="#!" class="secondary-content">${price}₽</a>
+              </li>`
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    const searchLine = window.location.search.replace('?', '').split('=')
+
+    for (let i = 0; i < searchLine.length; ++i) {
+      if (searchLine[i][0] !== 'q') continue
+
+      const productName = searchLine[i + 1]
+
+      document.querySelector('#search').value = decodeURI(productName)
+
+      const response = await fetch('/search', {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+        body: JSON.stringify({ productName }),
+      })
+
+      const { products } = await response.json()
+
+      const collection = document.querySelector('#collection')
+
+      for (let j = 0; j < products.length; ++j) {
+        collection.innerHTML += template(
+          `/static/images/${products[j].images[0]}`,
+          products[j].name,
+          `${products[j].about.slice(0, 55)}...`,
+          products[j].price,
+          products[j].id
+        )
+      }
+
+      break
+    }
+  })
+</script>
+<script>
+  const goToProduct = (id) => {
+    window.location = `/product/${id}`
+  }
+</script>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SignUp</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  </head>
+  <body>
+    <div class="center">
+      <div class="container">
+        <h1>Зарегистрироваться</h1>
+
+        <div class="row container">
+          <div class="container">
+            <div class="input-field col s12">
+              <input
+                placeholder="Логин"
+                id="login"
+                type="text"
+                class="validate"
+              />
+            </div>
+            <div class="input-field col s12">
+              <input
+                placeholder="Пароль"
+                id="password"
+                type="password"
+                class="validate"
+              />
+            </div>
+            <button class="btn blue" onclick="signUp()">
+              Зарегестрироваться
+            </button>
+
+            <button class="btn blue" onclick="goToLogin()">Войти</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<script>
+  const goToLogin = () => {
+    window.location = '/login'
+  }
+</script>
+
+<script>
+  const signUp = async () => {
+    const textLogin = document.querySelector('#login').value
+    const textPass = document.querySelector('#password').value
+
+    if (textLogin.length == 0) return M.toast({ html: 'Неправильный логин' })
+    if (textPass.length == 0) return M.toast({ html: 'Неправильный пароль' })
+
+    const response = await fetch('/signup', {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify({ login: textLogin, pass: textPass }),
+    })
+
+    const body = await response.json()
+    if (body.status === 'ok') {
+      localStorage.setItem('username', textLogin)
+      window.location = '/'
+    } else M.toast({ html: body.status })
+  }
+</script>

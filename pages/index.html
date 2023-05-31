@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/css/general.css" />
+
+    <title>ELECTRO 2.0</title>
+
+    <style>
+      .btn {
+        background-color: #2196f3;
+      }
+
+      .card-price {
+        color: green;
+      }
+#verh{ text-align: justify;
+}
+      #first-line img {
+        height: 250px;
+        width: 290px;
+        text-align:center;
+      }
+      #second-line img {
+        height: 250px;
+        width: 290px;
+        text-align:center;
+      }
+      #third-line img {
+        height: 250px;
+        width: 290px;
+        text-align:center;
+      }
+      #fourth-line img {
+        height: 250px;
+        width : 290px;
+        text-align:center;
+      }
+      #five-line img{
+        text-align:center;
+        height: 250px;
+        width : 290px;
+      }
+       #carousel img{ 
+        height: 100%;
+        width: 100%;
+      }
+      #poisk{
+        height:20px;
+        width:30px;
+        text-align:left
+        
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Dropdown Structure -->
+    <nav>
+      <ul id="dropdown1" class="dropdown-content">
+        <li><a href="/profile">Профиль</a></li>
+        <li class="divider"></li>
+        <li><a href="#!" onclick="logout()">Выход</a></li>
+      </ul>
+      <div class="nav-wrapper white">
+        <div class="row">
+          <div class="col s3">
+            <a href="/" class="brand-logo blue-text">ELECTRO</a>
+          </div>
+          <div  class="col s3">
+            <div>
+               <!-- <div id="poisk" class="col s3"> <p>Поиск</p></div>  -->
+              <div class="input-field blue">
+                <input id="search" type="search" required />
+                <label class="label-icon" for="search"
+                  ><i
+                    id="search-button"
+                    onclick="search()"
+                    class="material-icons"
+                    >search</i
+                  ></label
+                >
+                <i class="material-icons">close</i>
+              </div>
+            </div>
+          </div>
+          <div id="verh" class="row">
+            <ul class="right hide-on-med-and-down">
+              <li>
+                <a
+                  class="dropdown-trigger blue-text"
+                  href="#!"
+                  id="username"
+                  data-target="dropdown1"
+                  >Dropdown<i class="material-icons right"
+                    >arrow_drop_down</i
+                  ></a
+                >
+              </li>
+              <li><a class="green-text" href="/favorite">Избранное</a></li>
+              <li><a class="red-text" href="/card">Корзина</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!-- Dropdown Structure -->
+    <section class="slider">
+      <div id="carousel" class="carousel carousel-slider">
+        <a class="carousel-item" href="#one!"
+          ><img src="https://cms.mvideo.ru/magnoliaPublic/.imaging/webp/dam/af638f3a-d680-420d-a658-a249c5b7adb1" 
+        /></a>
+        <a class="carousel-item" href="#two!"
+          ><img src="https://cms.mvideo.ru/magnoliaPublic/.imaging/webp/dam/7b190a73-e098-450c-ab94-a416194e52b6"
+        /></a>
+        <a class="carousel-item" href="#three!"
+          ><img src="https://cms.mvideo.ru/magnoliaPublic/.imaging/webp/dam/5c31c7a4-e711-4b26-9c41-793d0857a9b7"
+        /></a>
+        <a class="carousel-item" href="#four!"
+          ><img src="https://cms.mvideo.ru/magnoliaPublic/.imaging/webp/dam/403dc530-e28b-4409-80bb-142f05122425"
+        /></a>
+      </div>
+    </section>
+
+    <section class="discounts">
+      <div>
+        <h2 class="center-align">Товары</h2>
+        <div id="first-line" class="row">
+          <div id="product1" class="col s2">
+            <div class="card">
+              <div class="card-image">
+                <a href="#"><img height="300px" src="" /> </a>
+              </div>
+
+              <div class="center">
+                <div class="card-price">---₽</div>
+                <div class="card-title">NAME</div>
+              </div>
+            </div>
+          </div>
+          <div id="product2" class="col s2">
+            <div class="card">
+              <div class="card-image">
+                <img
+                  height="300px"
+
+                  src=""
+                />
+                <span class="card-title">NAME</span>
+              </div>
+            </div>
+          </div>
+          <div id="product3" class="col s2">
+            <div class="card">
+              <div class="card-image">
+                <img
+                  height="300px"
+                  src=""
+                />
+                <span class="card-title">50% Скидка</span>
+              </div>
+            </div>
+          </div>
+          <div id="product4" class="col s2">
+            <div class="card">
+              <div class="card-image">
+                <img
+                  height="2500px"
+                  width="100px"
+                  src=""
+                />
+                 <span class="card-title">50% Скидка</span> 
+              </div>
+            </div>
+          </div>
+          <div id="product5" class="col s2">
+            <div class="card">
+              <div class="card-image">
+                <img
+                  height="2500px"
+                  width="100px"
+                  src=""
+                />
+                <span class="card-title">50% Скидка</span>
+              </div>
+            </div>
+          </div>
+                <div id="product6" class="col s2">
+                  <div class="card">
+                    <div class="card-image">
+                      <img
+                        height="2500px"
+                        width="100px"
+                        src=""
+                      />
+                      <span class="card-title">50% Скидка</span>
+                    </div>
+                  </div>
+                </div>
+                <div>
+          <div id="product7" class="col s2">
+            <div class="card">
+              <div class="card-image">
+                <img
+                  height="300px"
+                  src=""
+                />
+                <span class="card-title">50% Скидка</span>
+              </div>
+            </div>
+          </div>
+          <div id="product8" class="col s2">
+            <div class="card">
+              <div class="card-image">
+                <img
+                  height="300px"
+                  src=""
+                
+                />
+                <span class="card-title">50% Скидка</span>
+              </div>
+            </div>
+          </div>
+          <div id="product9" class="col s2">
+            <div class="card">
+              <div class="card-image">
+                <img
+                  height="300px"
+                  src=""
+                />
+                <span class="card-title">50% Скидка</span>
+              </div>
+            </div>
+          </div>
+          <div id="product10" class="col s2">
+            <div class="card">
+              <div class="card-image">
+                <img
+                  height="300px"
+                  src=""
+                />
+                <span class="card-title">50% Скидка</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="first-line" class="row">
+          <div id="product11" class="col s2">
+            <div class="card">
+              <div class="card-image">
+                <img
+                height="300px"
+                  src=""
+                />
+                <span class="card-title">50% Скидка</span>
+              </div>
+              <div class="card-content">
+                <p>Product Description</p>
+              </div>
+            </div>
+          </div>
+          <div id="product12" class="col s2">
+            <div class="card">
+              <div class="card-image">
+                <img
+                height="300px"
+                  src=""
+                />
+                <span class="card-title">50% Скидка</span>
+              </div>
+              <div class="card-content">
+                <p>Product Description</p>
+              </div>
+            </div>
+          </div>
+          <div id="product13" class="col s2">
+            <div class="card">
+              <div class="card-image">
+                <img 
+                height="300px"
+                  src=""
+                />
+                 <span class="card-title">50% Скидка</span> 
+              </div>
+              <div class="card-content">
+                <p>Product Description</p>
+              </div>
+            </div>
+          </div>
+          <div id="product14" class="col s2">
+            <div class="card">
+              <div class="card-image">
+                <img
+             
+                height="300px"
+                  src=""
+                />
+                <span class="card-title">50% Скидка</span>
+              </div>
+              <div class="card-content">
+                <p>Product Description</p>
+              </div>
+            </div>
+          </div>
+           <div id="product15" class="col s2"> 
+            <div class="card">
+              <div class="card-image">
+                <img
+                weight="300px"
+                height="300px"
+                  src=""
+                />
+                <span class="card-title">30% Скидка</span> 
+              </div>
+              <div class="card-content">
+                <p>Product Description</p>
+              </div>
+            </div>
+          </div>
+          <div id="product16" class="col s2">
+            <div class="card">
+              <div class="card-image">
+                <img
+                height="300px"
+                  src=""
+                />
+                <span class="card-title">50% Скидка</span>
+              </div>
+            </div>
+          </div>
+          <div id="product17" class="col s2">
+            <div class="card">
+              <div class="card-image">
+                <img
+                  height="300px"
+                  src=""
+                />
+                <span class="card-title">50% Скидка</span>
+              </div>
+            </div>
+          </div>
+          <div id="product18" class="col s2">
+            <div class="card">
+              <div class="card-image">
+                <img
+                  height="300px"
+                  src=""
+                />
+               
+              </div>
+            </div>
+          </div>
+        </div>
+        
+
+        <div>
+          <div id="product19" class="col s2">
+            <div class="card">
+              <div class="card-image">
+                <img
+                  height="300px"
+                  src=""
+                />
+                <span class="card-title">50% Скидка</span>
+              </div>
+            </div>
+          </div>
+          <div id="product20" class="col s2">
+            <div class="card">
+              <div class="card-image">
+                <img
+                  height="300px"
+                  src=""
+                />
+                <span class="card-title">50% Скидка</span>
+              </div>
+            </div>
+          </div>
+          <div id="product21" class="col s2">
+            <div class="card">
+              <div class="card-image">
+                <img
+                  height="300px"
+                />
+                <span class="card-title">50% Скидка</span>
+              </div>
+            </div>
+          </div>
+          <div id="product22" class="col s2">
+            <div class="card">
+              <div class="card-image">
+                <img
+                  height="300px"
+                  
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="five-line" class="row">
+          <div id="product23" class="col s2">
+            <div class="card">
+              <div class="card-image">
+                <img
+                  height="300px"
+                  src=""
+                  >
+                  <span class="card-title">50% Скидка</span>
+              </div>
+            </div>
+          </div>
+          <div id="product24" class="col s2">
+            <div class="card">
+              <div class="card-image">
+                <img
+                  height="300px">
+                  <span class="card-title">50% Скидка</span>
+              </div>
+            </div>
+          </div>
+          <div id="product25" class="col s2">
+            <div class="card">
+              <div class="card-image">
+                <img
+                  height="300px">
+                  <span class="card-title">50% Скидка</span>
+              </div>
+            </div>
+          </div>
+          <div id="product26" class="col s2">
+            <div class="card">
+              <div class="card-image">
+                <img
+                  height="300px">
+                  <span class="card-title">50% Скидка</span>
+              </div>
+            </div>
+          </div>
+          <div id="product27" class="col s2">
+            <div class="card">
+              <div class="card-image">
+                <img
+                  height="300px">
+                  <span class="card-title">50% Скидка</span>
+              </div>
+            </div>
+          </div>
+          <div id="product28" class="col s2">
+            <div class="card">
+              <div class="card-image">
+                <img
+                  height="300px">
+                  <span class="card-title">50% Скидка</span>
+              </div>
+            </div>
+          </div>
+          <div id="product29" class="col s2">
+            <div class="card">
+              <div class="card-image">
+                <img
+                  height="300px">
+                  <span class="card-title">50% Скидка</span>
+              </div>
+            </div>
+          </div>
+          <div id="product30" class="col s2">
+            <div class="card">
+              <div class="card-image">
+                <img
+                  height="300px">
+      </div>
+    </section>
+  </body>
+</html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="/static/scripts/general.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var elems = document.querySelectorAll('.carousel')
+    var instances = M.Carousel.init(elems, {
+      fullWidth: true,
+      indicators: true,
+    })
+  })
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    const response = await fetch('/get_all_products', {
+      method: 'GET',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+    })
+
+    const { products } = await response.json()
+    const p = []
+
+    for (let i = 0; i < products.length; ++i) {
+      if (p.length ===30) break
+
+      p.push(products[i])
+    }
+
+    const template = (href, src, price, name) => `
+            <div class="card">
+              <div class="card-image ">
+                <a href="${href}"><img  src="${src}" /> </a>
+              </div>
+
+              <div class="center">
+                <div class="card-price">${price}₽</div>
+                <div class="card-title">${name}</div>
+              </div>
+            </div>`
+
+    for (let i = 0; i < p.length; ++i) {
+      const id = i + 1
+
+      const block = document.querySelector(`#product${id}`)
+
+      block.innerHTML = template(
+        `/product/${p[i].id}`,
+        `/static/images/${p[i].images[0]}`,
+        p[i].price,
+        p[i].name
+      )
+    }
+  })
+</script>

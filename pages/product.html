@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/css/general.css" />
+    <style>
+      .product-image {
+        margin-bottom: 2rem;
+      }
+
+      .product-image img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .image-gallery img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 1rem;
+        cursor: pointer;
+      }
+
+      .product-title {
+        margin-top: 0;
+      }
+
+      .product-details {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-top: 1rem;
+      }
+
+      .product-price {
+        font-size: 2rem;
+        margin-right: 1rem;
+      }
+
+      .product-button {
+        margin-top: 1rem;
+      }
+
+      .reviews-section {
+        background-color: #f5f5f5;
+        padding: 2rem;
+      }
+
+      .reviews-header {
+        margin-top: 0;
+      }
+
+      .average-rating {
+        margin-top: 0;
+        margin-bottom: 2rem;
+      }
+
+      .reviews-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .review-item {
+        display: flex;
+        margin-bottom: 2rem;
+      }
+
+      .review-avatar img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 50%;
+        margin-right: 1rem;
+      }
+
+      .review-author {
+        margin-top: 0;
+      }
+
+      .review-date {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        font-style: italic;
+      }
+
+      .review-comment {
+        margin-top: 0;
+      }
+
+      .review-form-header {
+        margin-top: 0;
+      }
+
+      .input-field .input-field input[type='text'],
+      .input-field input[type='password'],
+      .input-field input[type='email'],
+      .input-field textarea {
+        font-size: 1rem;
+        padding: 0.5rem;
+        border: none;
+        border-radius: 2px;
+        background-color: #fff;
+        box-shadow: none;
+      }
+
+      .input-field input[type='text']:focus,
+      .input-field input[type='password']:focus,
+      .input-field input[type='email']:focus,
+      .input-field textarea:focus {
+        border: none;
+        box-shadow: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Dropdown Structure -->
+    <nav>
+      <ul id="dropdown1" class="dropdown-content">
+        <li><a href="#!">Профиль</a></li>
+        <li class="divider"></li>
+        <li><a href="#!" onclick="logout()">Выход</a></li>
+      </ul>
+      <div class="nav-wrapper white">
+        <div class="row">
+          <div class="col s3">
+            <a href="/" class="brand-logo blue-text">ELECTRO</a>
+          </div>
+          <div class="col s3">
+            <div>
+              <div class="input-field blue">
+                <input id="search" type="search" required />
+                <label class="label-icon" for="search"
+                  ><i
+                    id="search-button"
+                    onclick="search()"
+                    class="material-icons"
+                    >search</i
+                  ></label
+                >
+                <i class="material-icons">close</i>
+              </div>
+            </div>
+          </div>
+          <div class="col s6">
+            <ul class="right hide-on-med-and-down">
+              <li>
+                <a
+                  class="dropdown-trigger blue-text"
+                  href="#!"
+                  id="username"
+                  data-target="dropdown1"
+                  >Dropdown<i class="material-icons right"
+                    >arrow_drop_down</i
+                  ></a
+                >
+              </li>
+              <li><a class="green-text" href="/favorite">Избранное</a></li>
+              <li><a class="red-text" href="/card">Корзина</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!-- Dropdown Structure -->
+    <main class="container" style="margin-top: 105px">
+      <div class="row">
+        <div class="col s12">
+          <div class="col s4">
+            <div class="product-image">
+              <img
+                id="product-image"
+                width="500px"
+                src=""
+                alt="Product Image"
+              />
+            </div>
+            <div id="image-gallery" class="row image-gallery"></div>
+          </div>
+          <div class="col s8">
+            <h3 id="product-name" class="product-title">loading...</h3>
+            <p id="product-about" class="product-description">loading...</p>
+            <div class="product-details">
+              <p id="product-price" class="product-price">loading...</p>
+              <div>
+                <div class="input-field">
+                  <input
+                    type="number"
+                    id="quantity"
+                    min="1"
+                    max="10"
+                    value="1"
+                  />
+                  <label for="quantity">Количество</label>
+                </div>
+                <button
+                  class="btn waves-effect waves-light product-button blue"
+                  onclick="addToTheCard()"
+                >
+                  В корзину
+                </button>
+                <button
+                  onclick="addToTheFavorite()"
+                  class="btn waves-effect waves-light product-button blue"
+                >
+                  В избранное
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section class="reviews-section">
+        <div class="container">
+          <div class="row">
+            <div class="col s12">
+              <h2 class="reviews-header">Отзывы покупателей</h2>
+              <p id="average-rating" class="average-rating">
+                Average rating: - stars
+              </p>
+              <ul id="reviews-list" class="reviews-list">
+                <!-- Add more review items here -->
+              </ul>
+              <div class="review-form">
+                <h3 class="review-form-header">Оставить отзыв</h3>
+                <div class="input-field">
+                  <input type="text" id="review-name" required />
+                  <label for="review-name">Name</label>
+                </div>
+                <div class="input-field">
+                  <textarea
+                    id="review-comment"
+                    class="materialize-textarea"
+                    required
+                  ></textarea>
+                  <label for="review-comment">Comment</label>
+                </div>
+                <button
+                  onclick="submitReview()"
+                  class="btn waves-effect waves-light"
+                >
+                  Отправить
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<!-- Materialize JS library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="/static/scripts/general.js"></script>
+
+<script>
+  const reviewTemplate = (name, date, comment) => `<li class="review-item">
+                  <div class="review-avatar">
+                    <img
+                      src="https://picsum.photos/80/80?random=${Math.floor(
+                        Math.random() * 10
+                      )}"
+                      alt="User Avatar"
+                    />
+                  </div>
+                  <div class="review-content">
+                    <h4 class="review-author">${name}</h4>
+                    <p class="review-date">${date}</p>
+                    <p class="review-comment">
+                      ${comment}
+                    </p>
+                  </div>
+                </li>`
+</script>
+
+<script>
+  const product_id = window.location.pathname
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    const response = await fetch(product_id, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+    })
+
+    const body = await response.json()
+
+    if (body.status === 'ok') {
+      const { product } = body
+
+      document.querySelector('#product-name').textContent = product.name
+
+      document.querySelector('#product-about').textContent = product.about
+      document.querySelector('#product-price').textContent = product.price + '₽'
+
+      document.querySelector(
+        '#product-image'
+      ).src = `/static/images/${product.images[0]}`
+
+      const imageGallery = document.querySelector('#image-gallery')
+
+      for (let i = 0; i < product.images.length; ++i) {
+        imageGallery.innerHTML =
+          imageGallery.innerHTML +
+          `<img
+                class="col s3"
+                src="/static/images/${product.images[i]}"
+                alt="Thumbnail Image"
+              />`
+      }
+
+      $('.image-gallery img').click(function () {
+        $('.product-image img').attr('src', $(this).attr('src'))
+      })
+
+      const { reviews } = product.reviews
+
+      const reviewsList = document.querySelector('#reviews-list')
+
+      document.querySelector(
+        '#average-rating'
+      ).textContent = `Средняя оценка: ${product.reviews.rating} звезд`
+
+      for (let i = 0; i < reviews.length; ++i) {
+        const { name, date, comment } = reviews[i]
+
+        const r = reviewTemplate(name, date, comment)
+
+        reviewsList.innerHTML = reviewsList.innerHTML + r
+      }
+    } else {
+      M.toast({ html: body.status })
+    }
+  })
+</script>
+
+<script>
+  const submitReview = async () => {
+    const name = document.querySelector('#review-name').value
+    const comment = document.querySelector('#review-comment').value
+
+    const response = await fetch(`/submit_review${product_id}`, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify({ name, comment }),
+    })
+
+    const body = await response.json()
+
+    if (body.status === 'ok') {
+      reviewsList = document.querySelector('#reviews-list')
+
+      const date = new Date()
+
+      reviewsList.innerHTML =
+        reviewsList.innerHTML +
+        reviewTemplate(name, `March ${date.getDate()}, 2023`, comment)
+    } else {
+      M.toast({ html: body.status })
+    }
+  }
+</script>
+
+<script>
+  const addToTheCard = async () => {
+    const response = await fetch(`/add_to_card${product_id}`, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify({
+        username: localStorage.getItem('username'),
+        name: document.querySelector('#product-name').textContent,
+        quantity: document.querySelector('#quantity').value,
+      }),
+    })
+
+    const body = await response.json()
+
+    if (body.status === 'ok') {
+      M.toast({ html: 'Добавлен' })
+    } else {
+      M.toast({ html: body.status })
+    }
+  }
+</script>
+
+<script>
+  const addToTheFavorite = async () => {
+    const response = await fetch(`/add_to_favorite${product_id}`, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify({
+        username: localStorage.getItem('username'),
+        name: document.querySelector('#product-name').textContent,
+      }),
+    })
+
+    const body = await response.json()
+
+    if (body.status === 'ok') {
+      M.toast({ html: 'Добавлен' })
+    } else {
+      M.toast({ html: body.status })
+    }
+  }
+</script>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Корзина</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Materialize CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/css/general.css" />
+    <!-- Custom CSS -->
+    <style>
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .product-card {
+        margin-bottom: 20px;
+      }
+
+      .product-card img {
+        height: 300px;
+        object-fit: cover;
+      }
+
+      .product-card .card-content {
+        padding: 10px;
+      }
+
+      .product-card .card-title {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+      }
+
+      .product-card .card-action {
+        padding: 10px;
+      }
+
+      .product-card .card-action a {
+        margin-right: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul id="dropdown1" class="dropdown-content">
+          <li><a href="#!">Профиль</a></li>
+          <li class="divider"></li>
+          <li><a href="#!" onclick="logout()">Выход</a></li>
+        </ul>
+        <div class="nav-wrapper white">
+          <div class="row">
+            <div class="col s3">
+              <a href="/" class="brand-logo blue-text">Electro</a>
+            </div>
+            <div class="col s3">
+              <div>
+                <div class="input-field blue">
+                  <input id="search" type="search" required />
+                  <label class="label-icon" for="search"
+                    ><i
+                      id="search-button"
+                      onclick="search()"
+                      class="material-icons"
+                      >search</i
+                    ></label
+                  >
+                  <i class="material-icons">close</i>
+                </div>
+              </div>
+            </div>
+            <div class="col s6">
+              <ul class="right hide-on-med-and-down">
+                <li>
+                  <a
+                    class="dropdown-trigger blue-text"
+                    href="#!"
+                    id="username"
+                    data-target="dropdown1"
+                    >Dropdown<i class="material-icons right"
+                      >arrow_drop_down</i
+                    ></a
+                  >
+                </li>
+                <li><a class="green-text" href="/favorite">Избранное</a></li>
+                <li><a class="red-text" href="/card">Корзина</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <div class="container">
+        <div class="row center">
+          <div class="col s12">
+            <button
+              disabled
+              class="btn blue"
+              id="buy-button"
+              onclick="goToDeliveryPage()"
+            >
+              Купить
+            </button>
+          </div>
+
+          <div class="col s12">
+            <h3 id="all-price">-₽</h3>
+          </div>
+        </div>
+
+        <div id="card" class="row">
+          <!-- Repeat the above card for each favorite product -->
+        </div>
+      </div>
+    </main>
+    <!-- Materialize JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  </body>
+</html>
+
+<script src="/static/scripts/general.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    const response = await fetch('/card', {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify({ username: localStorage.getItem('username') }),
+    })
+
+    const body = await response.json()
+
+    const template = (
+      name,
+      quantity,
+      price,
+      imagePath,
+      id
+    ) => `<div class="col s5">
+            <div class="card product-card">
+              <div class="card-image">
+                <a  href="/product/${id}"> 
+                  <img
+                  src="/static/images/${imagePath}"
+                  alt="Product Image"
+                /></a>
+              </div>
+              <div class="card-content">
+                <span class="card-title"><a href="/product/${id}">${price}₽ ${name}  [${quantity}]</a></span>
+                <span >${price}₽ * ${quantity} = ${price * quantity}₽</span>
+              </div>
+              <div class="card-action">
+                <a href="#" onclick="removeProduct(${id})">Удалить</a>
+              </div>
+            </div>
+          </div>`
+
+    const card = document.querySelector('#card')
+
+    let allPriceRub = 0
+
+    for (let i = 0; i < body.card.length; ++i) {
+      allPriceRub += Number(body.card[i].price) * Number(body.card[i].quantity)
+
+      card.innerHTML =
+        card.innerHTML +
+        template(
+          body.card[i].name,
+          body.card[i].quantity,
+          body.card[i].price,
+          body.card[i].images[0],
+          body.card[i].id
+        )
+    }
+
+    // -₽
+
+    const allPrice = document.querySelector('#all-price')
+
+    allPrice.innerHTML = `${allPriceRub}₽`
+
+    if (allPriceRub !== 0)
+      document.querySelector('#buy-button').disabled = false
+  })
+</script>
+
+<script>
+  const goToDeliveryPage = () => {
+    window.location = '/delivery'
+  }
+</script>
+<script>
+  const removeProduct = async (id) => {
+    const response = await fetch('/remove_product', {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify({ username: localStorage.getItem('username'), id }),
+    })
+
+    const { status } = await response.json()
+
+    if (status === 'ok') {
+      window.location = '/card'
+    } else {
+      M.toast({ html: status })
+    }
+  }
+</script>

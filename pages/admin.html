@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Admin Page</title>
+    <!-- Import Materialize CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+
+    <!-- Import Materialize JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/css/general.css" />
+
+    <style>
+      .added-image {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <!-- Dropdown Structure -->
+      <nav>
+        <ul id="dropdown1" class="dropdown-content">
+          <li><a href="#!">Профиль</a></li>
+          <li class="divider"></li>
+          <li><a href="#!" onclick="logout()">Выход</a></li>
+        </ul>
+        <div class="nav-wrapper white">
+          <div class="row">
+            <div class="col s3">
+              <a href="/" class="brand-logo blue-text">ELECTRO</a>
+            </div>
+            <div class="col s3">
+              <div>
+                <div class="input-field blue">
+                  <input id="search" type="search" required />
+                  <label class="label-icon" for="search"
+                    ><i
+                      id="search-button"
+                      onclick="search()"
+                      class="material-icons"
+                      >search</i
+                    ></label
+                  >
+                  <i class="material-icons">close</i>
+                </div>
+              </div>
+            </div>
+            <div class="col s6">
+              <ul class="right hide-on-med-and-down">
+                <li>
+                  <a
+                    class="dropdown-trigger blue-text"
+                    href="#!"
+                    id="username"
+                    data-target="dropdown1"
+                    >Dropdown<i class="material-icons right"
+                      >arrow_drop_down</i
+                    ></a
+                  >
+                </li>
+                <li><a class="Green-text" href="/favorite">Избранное</a></li>
+                <li><a class="red-text" href="/card">Корзина</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <!-- Dropdown Structure -->
+    </header>
+    <main class="container">
+      <div class="center container">
+        <h3>Add Product</h3>
+        <div id="add-product-form">
+          <div class="input-field">
+            <label for="product-name">Product Name</label>
+            <input type="text" id="product-name" name="product-name" />
+          </div>
+          <div class="input-field">
+            <label for="product-price">Product Price</label>
+            <input type="number" id="product-price" name="product-price" />
+          </div>
+          <div class="input-field">
+            <label for="product-description">Product Description</label>
+            <textarea
+              id="product-description"
+              name="product-description"
+            ></textarea>
+          </div>
+
+          <div class="input-field">
+            <div>
+              Картинки :
+              <div class="row" id="images"></div>
+            </div>
+
+            <label for="image-input">Введите картинки</label>
+            <input id="image-input" name="image-input" />
+          </div>
+
+          <button
+            class="btn waves-effect waves-light blue"
+            type="submit"
+            name="action"
+            onclick="submit()"
+          >
+            Add Product
+          </button>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
+<script src="/static/scripts/general.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    const response = await fetch('/admin_access', {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify({ username: localStorage.getItem('username') }),
+    })
+
+    const { status } = await response.json()
+
+    if (!status) window.location = '/'
+  })
+</script>
+
+<script>
+  const imagesNames = []
+
+  const renderImages = () => {
+    let fullImagesHtmlString = ''
+
+    for (let i = 0; i < imagesNames.length; ++i) {
+      fullImagesHtmlString += `<div onclick="removeImage(${i})" style="margin : 10px" class="added-image col s2 blue white-text">${imagesNames[i]}</div>`
+    }
+
+    document.querySelector('#images').innerHTML = fullImagesHtmlString
+  }
+
+  document
+    .querySelector('#image-input')
+    .addEventListener('keypress', function (event) {
+      // If the user presses the "Enter" key on the keyboard
+      if (event.key === 'Enter') {
+        // Cancel the default action, if needed
+        event.preventDefault()
+        // Trigger the button element with a click
+        // document.getElementById('myBtn').click()
+
+        const value = document.querySelector('#image-input').value
+
+        if (value === '') return
+
+        imagesNames.push(value)
+
+        document.querySelector('#image-input').value = ''
+        renderImages()
+      }
+    })
+</script>
+
+<script>
+  const removeImage = (index) => {
+    imagesNames.splice(index, 1)
+    renderImages()
+  }
+</script>
+
+<script>
+  const submit = async () => {
+    const name = document.querySelector('#product-name').value
+
+    if (name === '') return M.toast({ html: 'Неправильное имя' })
+
+    const price = document.querySelector('#product-price').value
+
+    if (price === '') return M.toast({ html: 'Неправильное цена' })
+
+    const about = document.querySelector('#product-description').value
+
+    const response = await fetch('/add_product', {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify({ name, price, about, images: imagesNames }),
+    })
+
+    const { status } = await response.json()
+    console.log(status)
+  }
+</script>
