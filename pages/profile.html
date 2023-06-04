@@ -16,6 +16,65 @@
     <link rel="stylesheet" href="/static/css/general.css" />
     <!-- Custom CSS -->
     <style>
+           .btn {
+        background-color: #2196f3;
+      }
+      
+      .el{
+  font-size: xx-large;
+position:absolute;
+
+
+        ;
+
+      }
+      .input-field{
+    left:30%;
+        width:20%;
+     
+       
+        position: absolute;
+       
+      }
+      .ufc{
+    
+      width:30%;
+        height:5%;
+        margin-left:70%;
+      position:absolute;
+        display:inline-flex;
+        
+      }
+      #verh{
+        left:1500px;
+        display: inline;
+        text-align:justify;
+      }
+
+      .card-price {
+        color: green;
+      }
+
+      #first-line {width:100%;height: 100%;}
+      img{
+        height: 100%;
+       width: 100%;
+        
+      }
+      
+       #carousel img{ 
+        height: 100%;
+        width: 100%;
+      }
+      #poisk{
+        top:5px;
+        margin-left:65%;
+        height:0px;
+        width:20%;
+
+    
+        
+      }
       .profile-header {
         margin-top: 2%;
         background-color: #2196f3;
@@ -59,33 +118,35 @@
     <!-- Dropdown Structure -->
     <nav>
       <ul id="dropdown1" class="dropdown-content">
-        <li><a href="#!">Профиль</a></li>
+        <li><a href="/profile">Профиль</a></li>
         <li class="divider"></li>
         <li><a href="#!" onclick="logout()">Выход</a></li>
       </ul>
       <div class="nav-wrapper white">
-        <div class="row">
-          <div class="col s3">
-            <a href="/" class="brand-logo blue-text">ELECTRO</a>
+        <div class="">
+          <div class="el">
+            <a href="/" class="el blue-text">ELECTRO</a>
           </div>
-          <div class="col s3">
+          <div id="" class="">
             <div>
+               <div id="poisk" class=""> <p>Поиск</p></div>
               <div class="input-field blue">
                 <input id="search" type="search" required />
                 <label class="label-icon" for="search"
                   ><i
                     id="search-button"
                     onclick="search()"
-                    class="material-icons"
+                    class="material-icons "
                     >search</i
                   ></label
                 >
-                <i class="material-icons">close</i>
+                <!-- <i class="material-icons ">close</i> -->
               </div>
             </div>
           </div>
-          <div class="col s6">
-            <ul class="right hide-on-med-and-down">
+          </div>
+          <div id="ufc" class="ufc">
+            <ul class="">
               <li>
                 <a
                   class="dropdown-trigger blue-text"
@@ -97,12 +158,10 @@
                   ></a
                 >
               </li>
-              <li><a class="green-text" href="/favorite">Избранное</a></li>
-              <li><a class="red-text" href="/card">Корзина</a></li>
+              <li><a class=" green-text" href="/favorite">Избранное</a></li>
+              <li><a class=" red-text" href="/card">Корзина</a></li>
             </ul>
           </div>
-        </div>
-      </div>
     </nav>
     <!-- Dropdown Structure -->
     <main>

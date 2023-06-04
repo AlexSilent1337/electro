@@ -146,7 +146,7 @@
     let fullImagesHtmlString = ''
 
     for (let i = 0; i < imagesNames.length; ++i) {
-      fullImagesHtmlString += `<div onclick="removeImage(${i})" style="margin : 10px" class="added-image col s2 blue white-text">${imagesNames[i]}</div>`
+      fullImagesHtmlString += `<div onclick="removeImage(${i})" style="margin : 10px" class="added-image col s3 blue white-text">${imagesNames[i]}</div>`
     }
 
     document.querySelector('#images').innerHTML = fullImagesHtmlString
